@@ -11,7 +11,7 @@ class RoomAdmin(admin.ModelAdmin):
     fieldsets = (
         (
             "Basic Info",
-            {"fields": ("name", "description", "country", "address", "price")},
+            {"fields": ("name", "description", "country", "address", "price", "host")},
         ),
         ("Times", {"fields": ("check_in", "check_out")}),
         ("Spaces", {"fields": ("guests", "beds", "bedrooms", "baths")}),
@@ -38,6 +38,9 @@ class RoomAdmin(admin.ModelAdmin):
         "check_in",
         "check_out",
         "instant_book",
+        "total_rating",
+        "count_amenities",
+        "count_photos",
     )
 
     list_filter = (
@@ -59,10 +62,23 @@ class RoomAdmin(admin.ModelAdmin):
 
     search_fields = ("^city", "^host__username")
 
+    def count_amenities(self, obj):
+        return obj.amenities.count()
+
+    count_amenities.short_description = "No of Amenities"
+
+    def count_photos(self, obj):
+        return obj.photos.count()
+
 
 @admin.register(models.RoomType, models.Amenity, models.HouseRule, models.Facility)
 class ItemAdmin(admin.ModelAdmin):
     """Item Admin Definition"""
+
+    list_display = ("name", "used_by")
+
+    def used_by(self, obj):
+        return obj.rooms.count()
 
 
 @admin.register(models.Photo)

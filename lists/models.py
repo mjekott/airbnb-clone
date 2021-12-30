@@ -9,8 +9,17 @@ class List(core_models.TimeStamedModel):
     """List Model Definition"""
 
     name = models.CharField(max_length=80)
-    user = models.ForeignKey("users.User", on_delete=models.CASCADE)
-    rooms = models.ManyToManyField(room_models.Room, blank=True)
+    user = models.ForeignKey(
+        "users.User", related_name="listings", on_delete=models.CASCADE
+    )
+    rooms = models.ManyToManyField(
+        room_models.Room, related_name="listings", blank=True
+    )
+
+    def count_rooms(self):
+        return self.rooms.count()
+
+    count_rooms.short_description = "No of rooms"
 
     def __str__(self):
         return self.name
