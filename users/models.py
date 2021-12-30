@@ -1,4 +1,3 @@
-from typing import Tuple
 from django.contrib.admin.options import ModelAdmin
 from django.db import models
 from django.contrib.auth.models import AbstractUser
@@ -28,7 +27,7 @@ class User(AbstractUser):
     CURRENCY_NG = "ng"
     CURRENCY_CHOICES = ((CURRENCY_NG, "NG"), (CURRENCY_USD, "USD"))
 
-    avatar = models.ImageField(blank=True)
+    avatar = models.ImageField(blank=True, upload_to="avatars")
     gender = models.CharField(choices=GENDER_CHOICES, max_length=10, blank=True)
     bio = models.TextField(default="", blank=True)
     birthdate = models.DateField(blank=True, null=True)
